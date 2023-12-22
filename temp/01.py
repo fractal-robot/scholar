@@ -5,10 +5,11 @@ def checkInput(entree: str):
     sortie : / (goto main si séquence ADN invalide)
     """
 
-    for c in entree:
-        if not (c == "A" or c == "T" or c == "G" or c == "C"):
-            print("Entrée incorrecte.\n")
-            main()
+    caracteresValides = set("ATGC")
+
+    if not all(c in caracteresValides for c in entree):
+        print("Entrée incorrecte.\n")
+        main()
 
 
 def trouverSuites(entree: str) -> dict:
@@ -19,18 +20,26 @@ def trouverSuites(entree: str) -> dict:
         dictionnaire :
             clé : suite de caractères
             valeur : nombre d'occurence
+
+    précondition :
+        callback main si entrée trop courte
     """
 
     valDict = {}
 
-    for i in range(2, len(entree)):
-        for j in range(0, len(entree), i):
+    tailleMinSequence = 2
+
+    if len(entree) < tailleMinSequence:
+        print("La séquence ADN est trop courte.")
+        main()
+
+    for i in range(tailleMinSequence, len(entree)):
+        for j in range(0, len(entree) - i + 1):
             valeur = entree[j : j + i]
-            if len(valeur) == i:
-                if valeur in valDict:
-                    valDict[valeur] += 1
-                else:
-                    valDict[valeur] = 1
+            if valeur in valDict:
+                valDict[valeur] += 1
+            else:
+                valDict[valeur] = 1
 
     return valDict
 
@@ -60,16 +69,19 @@ def main():
     - trouver l'occurence maximale
     - print la (ou les si plusieurs de même taille) plus longue suite(s) dans la séquence adn
     """
-    entree = str(input("Veuillez entrer la séquence ADN: "))
+    entree = str(input("Veuillez entrer la séquence ADN (A-T-G-C): "))
     checkInput(entree)
 
     valDict = trouverSuites(entree)
     valeurMax = trouverMaxOccurences(valDict)
 
-    print("La valeur maximale est atteinte en " + str(valeurMax) + " par : ")
+    print(
+        "La valeur maximale est atteinte avec " + str(valeurMax) + " occurences par : "
+    )
     for key in valDict:
         if valDict[key] == valeurMax:
             print("- " + key)
 
 
-main()
+if __name__ == "__main__":
+    main()
