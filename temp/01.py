@@ -62,9 +62,14 @@ def main():
     print("La plus longue sous-chaîne répétée est :", plusLongueSousChaine)
 
 
-if __name__ == "__main__":
-    main()
-
-
 def test():
-    val = trouverSousChainesRepetees("AAACCT")
+    result = trouverPlusLongueSousChaineRepetee("AATTGGAATTGGCGCCTTA")
+    assert result == "AATTGG"
+
+    result = trouverPlusLongueSousChaineRepetee("ATGC")
+    assert result == "Aucune sous-chaîne répétée trouvée."
+
+
+if __name__ == "__main__":
+    test()
+    main()
